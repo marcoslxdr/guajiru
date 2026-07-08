@@ -36,6 +36,7 @@ export async function getLatestPosts(limit = 3): Promise<Post[]> {
   const { data } = await supabase
     .from("posts")
     .select("*")
+    .eq("status", "published")
     .order("published_at", { ascending: false })
     .limit(limit);
 
@@ -47,7 +48,11 @@ export async function getAllPosts(): Promise<Post[]> {
   const supabase = getClient();
   if (!supabase) return [];
 
-  const { data } = await supabase.from("posts").select("*").order("published_at", { ascending: false });
+  const { data } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("status", "published")
+    .order("published_at", { ascending: false });
   return data ?? [];
 }
 
@@ -56,7 +61,12 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
   const supabase = getClient();
   if (!supabase) return null;
 
-  const { data } = await supabase.from("posts").select("*").eq("slug", slug).maybeSingle();
+  const { data } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("slug", slug)
+    .eq("status", "published")
+    .maybeSingle();
   return data;
 }
 

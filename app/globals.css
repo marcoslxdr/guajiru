@@ -11,13 +11,14 @@
   --background: var(--guajiru-neutro);
   --foreground: var(--guajiru-texto);
   --primary: var(--guajiru-verde);
-  --primary-foreground: #ffffff;
+  --primary-foreground: #f5faf0;
   --accent: var(--guajiru-limao);
   --secondary: var(--guajiru-vinho);
   --highlight: var(--guajiru-rosa-claro);
   --muted: #eef2e4;
   --muted-foreground: #4a5a3a;
   --border: #d4dcc8;
+  --surface: #faf9f5;
 }
 
 @theme inline {
@@ -31,6 +32,7 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
+  --color-surface: var(--surface);
   --font-sans: var(--font-source-sans);
   --font-display: var(--font-bebas);
 }
@@ -44,4 +46,102 @@ body {
   color: var(--foreground);
   font-family: var(--font-source-sans), system-ui, sans-serif;
   line-height: 1.25;
+}
+
+@layer components {
+  .font-display {
+    font-family: var(--font-bebas), sans-serif;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-overlay {
+    background:
+      radial-gradient(
+        ellipse 85% 75% at 14% 78%,
+        color-mix(in oklch, var(--guajiru-verde) 42%, rgb(20 26 16 / 0.62)) 0%,
+        color-mix(in oklch, var(--guajiru-verde) 14%, transparent) 48%,
+        transparent 72%
+      ),
+      linear-gradient(
+        108deg,
+        rgb(20 26 16 / 0.46) 0%,
+        rgb(47 79 28 / 0.22) 26%,
+        rgb(95 146 53 / 0.05) 50%,
+        transparent 74%
+      ),
+      linear-gradient(
+        to top,
+        rgb(15 20 12 / 0.38) 0%,
+        rgb(15 20 12 / 0.04) 42%,
+        transparent 78%
+      );
+  }
+
+  .hero-readable {
+    text-shadow: 0 2px 28px rgb(15 20 12 / 0.42);
+  }
+
+  .hero-readable h1 {
+    text-shadow: 0 3px 36px rgb(15 20 12 / 0.5);
+  }
+
+  .btn-primary {
+    @apply inline-flex h-12 items-center justify-center rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-[0_4px_14px_-4px_rgba(95,146,53,0.55)] transition-[opacity,transform,box-shadow] duration-200 ease-out hover:opacity-90 hover:shadow-[0_6px_20px_-4px_rgba(95,146,53,0.65)] active:scale-[0.98] disabled:opacity-60;
+  }
+
+  .btn-outline {
+    @apply inline-flex h-12 items-center justify-center rounded-full border-2 border-primary/25 bg-surface px-6 text-sm font-semibold text-foreground transition-colors duration-200 ease-out hover:border-primary/50 hover:bg-muted;
+  }
+
+  .btn-hero-primary {
+    @apply inline-flex h-12 min-w-[11rem] items-center justify-center rounded-full bg-accent px-7 text-sm font-bold text-foreground shadow-[0_6px_22px_-6px_rgba(197,209,77,0.75)] transition-[opacity,transform,box-shadow] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:opacity-95 hover:shadow-[0_8px_28px_-6px_rgba(197,209,77,0.85)] active:scale-[0.98];
+  }
+
+  .btn-hero-outline {
+    @apply inline-flex h-12 min-w-[11rem] items-center justify-center rounded-full border-2 border-primary-foreground/45 bg-primary-foreground/10 px-7 text-sm font-semibold text-primary-foreground transition-[border-color,background-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-primary-foreground/70 hover:bg-primary-foreground/16;
+  }
+
+  .btn-secondary {
+    @apply inline-flex h-11 items-center justify-center rounded-full bg-secondary px-6 text-sm font-semibold text-primary-foreground transition-[opacity,transform] duration-200 ease-out hover:opacity-90 active:scale-[0.98] disabled:opacity-60;
+  }
+
+  .input-field {
+    @apply w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-foreground transition-[border-color,box-shadow] duration-200 ease-out placeholder:text-muted-foreground/60 focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20;
+  }
+
+  .link-arrow {
+    @apply inline-flex items-center gap-1.5 text-sm font-semibold text-primary underline-offset-4 transition-colors hover:text-primary/80 hover:underline;
+  }
+
+  .prose-content {
+    @apply text-base leading-relaxed text-foreground;
+  }
+
+  .prose-content h2 {
+    @apply mb-3 mt-8 font-display text-3xl leading-tight;
+  }
+
+  .prose-content h3 {
+    @apply mb-2 mt-6 text-xl font-semibold;
+  }
+
+  .prose-content p {
+    @apply mb-4;
+  }
+
+  .prose-content ul {
+    @apply mb-4 list-disc space-y-2 pl-6;
+  }
+
+  .prose-content ol {
+    @apply mb-4 list-decimal space-y-2 pl-6;
+  }
+
+  .prose-content a {
+    @apply font-medium text-primary underline underline-offset-4;
+  }
+
+  .prose-content strong {
+    @apply font-semibold;
+  }
 }

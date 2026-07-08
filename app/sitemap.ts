@@ -22,7 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
     ...posts.map((post) => ({
       url: `${baseUrl}/noticias/${post.slug}`,
-      lastModified: new Date(post.published_at),
+      lastModified: post.published_at ? new Date(post.published_at) : new Date(),
     })),
   ];
 }

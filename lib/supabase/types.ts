@@ -1,11 +1,15 @@
+export type PostStatus = "draft" | "published";
+
 export type Post = {
   id: string;
   title: string;
   slug: string;
-  published_at: string;
+  published_at: string | null;
   category: "notícia" | "comunicado";
   cover_image_url: string | null;
   body: string | null;
+  status: PostStatus;
+  updated_at: string;
 };
 
 export type GalleryImage = {
@@ -13,6 +17,7 @@ export type GalleryImage = {
   image_url: string;
   caption: string | null;
   training_date: string | null;
+  published: boolean | null;
 };
 
 export type TransparencyDocument = {
@@ -101,16 +106,77 @@ export type Modality = {
 };
 
 export type Database = {
+  __InternalSupabase: {
+    PostgrestVersion: "14.5";
+  };
   public: {
     Tables: {
-      posts: { Row: Post };
-      gallery_images: { Row: GalleryImage };
-      transparency_documents: { Row: TransparencyDocument };
-      page_institucional: { Row: PageInstitucional & { id: number } };
-      page_historia: { Row: PageHistoria & { id: number; founders: { name: string; bio?: string }[] | null } };
-      page_diretoria: { Row: PageDiretoria & { id: number } };
-      site_settings: { Row: SiteSettings & { id: number } };
-      modalities: { Row: ModalityRow };
+      posts: {
+        Row: Post;
+        Insert: {
+          id?: string;
+          title: string;
+          slug: string;
+          published_at?: string | null;
+          category: Post["category"];
+          cover_image_url?: string | null;
+          body?: string | null;
+          status?: PostStatus;
+          updated_at?: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          slug?: string;
+          published_at?: string | null;
+          category?: Post["category"];
+          cover_image_url?: string | null;
+          body?: string | null;
+          status?: PostStatus;
+          updated_at?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      gallery_images: {
+        Row: GalleryImage;
+        Insert: {
+          id?: string;
+          image_url: string;
+          caption?: string | null;
+          training_date?: string | null;
+          published?: boolean | null;
+          created_at?: string | null;
+        };
+        Update: Partial<{
+          id: string;
+          image_url: string;
+          caption: string | null;
+          training_date: string | null;
+          published: boolean | null;
+          created_at: string | null;
+        }>;
+        Relationships: [];
+      };
+      transparency_documents: { Row: TransparencyDocument; Insert: TransparencyDocument; Update: Partial<TransparencyDocument>; Relationships: [] };
+      page_institucional: { Row: PageInstitucional & { id: number }; Insert: PageInstitucional & { id?: number }; Update: Partial<PageInstitucional>; Relationships: [] };
+      page_historia: { Row: PageHistoria & { id: number; founders: { name: string; bio?: string }[] | null }; Insert: PageHistoria; Update: Partial<PageHistoria>; Relationships: [] };
+      page_diretoria: { Row: PageDiretoria & { id: number }; Insert: PageDiretoria; Update: Partial<PageDiretoria>; Relationships: [] };
+      site_settings: { Row: SiteSettings & { id: number }; Insert: SiteSettings & { id?: number }; Update: Partial<SiteSettings>; Relationships: [] };
+      modalities: { Row: ModalityRow; Insert: Partial<ModalityRow>; Update: Partial<ModalityRow>; Relationships: [] };
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      [_ in never]: never;
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
     };
   };
 };

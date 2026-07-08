@@ -35,7 +35,9 @@ export default async function NoticiaDetailPage({ params }: PageProps) {
       <p className="text-sm uppercase tracking-wide text-secondary">{post.category}</p>
       <h1 className="mt-2 font-[family-name:var(--font-bebas)] text-5xl tracking-wide">{post.title}</h1>
       <p className="mt-2 text-sm text-muted-foreground">
-        {new Date(post.published_at).toLocaleDateString("pt-BR")}
+        {post.published_at
+          ? new Date(post.published_at).toLocaleDateString("pt-BR")
+          : null}
       </p>
       {post.cover_image_url ? (
         <Image

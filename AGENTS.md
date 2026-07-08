@@ -18,7 +18,9 @@ Site institucional e portal do **Clube Desportivo Guajiru** (Extremoz, RN).
 
 **Brand colors:** `#5F9235`, `#C5D14D`, `#DD8FB8`, `#B7728A`. Line-height 1.25.
 
-**Content editing:** Supabase Table Editor + Storage bucket `club-assets`. Sem painel custom na v1.
+**Content editing:** Painel `/admin` (posts + `site_settings`) com Supabase Auth. Fallback: Table Editor + Storage bucket `club-assets`.
+
+**Admin bootstrap:** Supabase Auth → criar user → `app_metadata: { "role": "admin" }` → desabilitar signup público → login em `/admin/login`.
 
 **Transparência:** tabela `transparency_documents` — campos `title`, `doc_type` (`ata` | `estatuto` | `relatório`), `file_url` (URL pública do PDF no bucket `club-assets`), `published_at`. Página `/transparencia` agrupa por tipo; empty state até primeiro insert.
 
