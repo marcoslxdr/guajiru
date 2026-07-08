@@ -1,7 +1,10 @@
 import { clubFallbacks } from "@/lib/fallbacks";
+import { modalityFallbacks } from "@/lib/modalities";
 import { createSupabaseClient, hasSupabase } from "./client";
+import { mapFallbackModality, mapModalityRow } from "./modality-mapper";
 import type {
   GalleryImage,
+  Modality,
   PageDiretoria,
   PageHistoria,
   PageInstitucional,
@@ -89,7 +92,7 @@ export async function getPageInstitucional(): Promise<PageInstitucional | null> 
     return {
       mission: clubFallbacks.mission,
       vision: clubFallbacks.vision,
-      values: clubFallbacks.values,
+      values: clubFallbacks.values.map((value) => value.name),
     };
   }
   const supabase = getClient();
@@ -131,4 +134,37 @@ export async function getPageDiretoria(): Promise<PageDiretoria | null> {
 export async function getContactEmail(): Promise<string | null> {
   const settings = await getSiteSettings();
   return settings?.contact_email ?? process.env.CONTACT_EMAIL ?? null;
+}
+
+export async function getAllModalities(): Promise<Modality[]> {
+  if (!hasSupabase) {
+    return modalityFallbacks.map(mapFallbackModality);
+  }
+
+  const supabase = getClient();
+  if (!supabase) {
+    return modalityFallbacks.map(mapFallbackModality);
+  }
+
+  const { data } = await supabase
+    .from("modalities")
+    .select("*")
+    .eq("published", true)
+    .order("sort_order", { ascending: true });
+
+  if (!data?.length) {
+    return modalityFallbacks.map(mapFallbackModality);
+  }
+
+  return data.map(mapModalityRow);
+}
+
+export async function getModalityBySlug(slug: string): Promise<Modality | null> {
+  const modalities = await getAllModalities();
+  return modalities.find((modality) => modality.slug === slug) ?? null;
+}
+
+export async function getAllModalitySlugs(): Promise<string[]> {
+  const modalities = await getAllModalities();
+  return modalities.map((modality) => modality.slug);
 }

@@ -50,6 +50,56 @@ export type SiteSettings = {
   facebook: string | null;
 };
 
+export type ModalityHighlight = {
+  title: string;
+  description: string;
+};
+
+export type ModalityImage = {
+  src: string;
+  alt: string;
+  caption?: string;
+};
+
+export type ModalityRow = {
+  id: string;
+  slug: string;
+  name: string;
+  short_description: string;
+  description: string;
+  intro_paragraphs: string[] | null;
+  hero_image_url: string;
+  hero_image_alt: string;
+  accent: "primary" | "secondary" | "accent";
+  keywords: string[] | null;
+  location: string | null;
+  audience: string | null;
+  training_schedule: string | null;
+  training_focus: string[] | null;
+  highlights: ModalityHighlight[] | null;
+  gallery: ModalityImage[] | null;
+  published: boolean;
+  sort_order: number;
+  created_at: string;
+};
+
+export type Modality = {
+  slug: string;
+  name: string;
+  shortDescription: string;
+  description: string;
+  introParagraphs: string[];
+  heroImage: ModalityImage;
+  gallery: ModalityImage[];
+  accent: ModalityRow["accent"];
+  keywords: string[];
+  location: string | null;
+  audience: string | null;
+  trainingSchedule: string | null;
+  trainingFocus: string[];
+  highlights: ModalityHighlight[];
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -60,6 +110,7 @@ export type Database = {
       page_historia: { Row: PageHistoria & { id: number; founders: { name: string; bio?: string }[] | null } };
       page_diretoria: { Row: PageDiretoria & { id: number } };
       site_settings: { Row: SiteSettings & { id: number } };
+      modalities: { Row: ModalityRow };
     };
   };
 };

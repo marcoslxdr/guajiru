@@ -3,7 +3,7 @@ import { AssociacaoForm } from "@/components/forms/associacao-form";
 import { ContactForm } from "@/components/forms/contact-form";
 import { SectionHeading } from "@/components/site/section-heading";
 import { clubFallbacks } from "@/lib/fallbacks";
-import { getSiteSettings } from "@/lib/supabase/queries";
+import { getAllModalities, getSiteSettings } from "@/lib/supabase/queries";
 
 export const metadata: Metadata = {
   title: "Contato",
@@ -12,7 +12,8 @@ export const metadata: Metadata = {
 };
 
 export default async function ContatoPage() {
-  const settings = await getSiteSettings();
+  const [settings, modalities] = await Promise.all([getSiteSettings(), getAllModalities()]);
+  const modalityOptions = modalities.map((modality) => modality.name);
   const lat = settings?.map_lat ?? clubFallbacks.mapLat;
   const lng = settings?.map_lng ?? clubFallbacks.mapLng;
   const address = settings?.address ?? clubFallbacks.address;
@@ -29,7 +30,7 @@ export default async function ContatoPage() {
 
         <section id="associar">
           <h2 className="mb-6 font-[family-name:var(--font-bebas)] text-3xl tracking-wide">Quero me associar</h2>
-          <AssociacaoForm />
+          <AssociacaoForm modalityOptions={modalityOptions} />
         </section>
       </div>
 
