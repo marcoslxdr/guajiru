@@ -6,10 +6,12 @@ import { sanitizePostHtml } from "@/lib/admin/sanitize-html";
 import { slugify } from "@/lib/admin/slugify";
 import { assertAdmin } from "@/lib/supabase/admin";
 import { getTypedSupabase } from "@/lib/supabase/typed-server";
-import type { Database, Post, PostStatus } from "@/lib/supabase/types";
+import type { Database, Post, PostStatus, TransparencyDocument } from "@/lib/supabase/types";
 
 const MAX_COVER_BYTES = 2 * 1024 * 1024;
 const ALLOWED_COVER_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
+const MAX_PDF_BYTES = 10 * 1024 * 1024;
+const DOC_TYPES = new Set<TransparencyDocument["doc_type"]>(["ata", "estatuto", "relatório"]);
 
 export type ActionResult = {
   ok: boolean;
@@ -283,4 +285,139 @@ function parseOptionalNumber(value: FormDataEntryValue | null): number | null {
   if (!raw) return null;
   const parsed = Number(raw);
   return Number.isFinite(parsed) ? parsed : null;
+}
+
+function transparencyStoragePath(id: string) {
+  return `transparency/${id}/document.pdf`;
+}
+
+async function uploadTransparencyPdf(id: string, file: File) {
+  if (file.size > MAX_PDF_BYTES) {
+    throw new Error("O PDF deve ter no máximo 10 MB.");
+  }
+
+  if (file.type !== "application/pdf") {
+    throw new Error("Formato inválido. Use apenas PDF.");
+  }
+
+  const supabase = await getTypedSupabase();
+  const path = transparencyStoragePath(id);
+
+  const { error } = await supabase.storage.from("club-assets").upload(path, file, {
+    upsert: true,
+    contentType: "application/pdf",
+  });
+
+  if (error) {
+    throw new Error("Falha ao enviar o PDF.");
+  }
+
+  const { data } = supabase.storage.from("club-assets").getPublicUrl(path);
+  return data.publicUrl;
+}
+
+export async function saveTransparencyDocumentAction(formData: FormData): Promise<ActionResult> {
+  await assertAdmin();
+
+  const id = String(formData.get("id") ?? "").trim() || undefined;
+  const title = String(formData.get("title") ?? "").trim();
+  const docTypeRaw = String(formData.get("doc_type") ?? "");
+  const publishedAt = String(formData.get("published_at") ?? "").trim();
+  const file = formData.get("file");
+
+  if (!title) {
+    return { ok: false, error: "Título é obrigatório." };
+  }
+
+  if (!DOC_TYPES.has(docTypeRaw as TransparencyDocument["doc_type"])) {
+    return { ok: false, error: "Tipo de documento inválido." };
+  }
+
+  if (!publishedAt) {
+    return { ok: false, error: "Data de publicação é obrigatória." };
+  }
+
+  const docType = docTypeRaw as TransparencyDocument["doc_type"];
+  const supabase = await getTypedSupabase();
+  const hasNewFile = file instanceof File && file.size > 0;
+
+  if (!id && !hasNewFile) {
+    return { ok: false, error: "Selecione um arquivo PDF." };
+  }
+
+  let docId = id;
+
+  if (id) {
+    const updatePayload: Database["public"]["Tables"]["transparency_documents"]["Update"] = {
+      title,
+      doc_type: docType,
+      published_at: publishedAt,
+    };
+
+    const { error } = await supabase.from("transparency_documents").update(updatePayload).eq("id", id);
+    if (error) {
+      return { ok: false, error: "Não foi possível salvar o documento." };
+    }
+  } else {
+    if (!hasNewFile || !(file instanceof File)) {
+      return { ok: false, error: "Selecione um arquivo PDF." };
+    }
+
+    docId = crypto.randomUUID();
+
+    try {
+      const fileUrl = await uploadTransparencyPdf(docId, file);
+      const { error } = await supabase.from("transparency_documents").insert({
+        id: docId,
+        title,
+        doc_type: docType,
+        published_at: publishedAt,
+        file_url: fileUrl,
+      });
+
+      if (error) {
+        await supabase.storage.from("club-assets").remove([transparencyStoragePath(docId)]);
+        return { ok: false, error: "Não foi possível criar o documento." };
+      }
+    } catch (error) {
+      return {
+        ok: false,
+        error: error instanceof Error ? error.message : "Falha no upload do PDF.",
+      };
+    }
+  }
+
+  if (!docId) {
+    return { ok: false, error: "Erro interno ao salvar documento." };
+  }
+
+  if (id && hasNewFile && file instanceof File) {
+    try {
+      const fileUrl = await uploadTransparencyPdf(docId, file);
+      await supabase.from("transparency_documents").update({ file_url: fileUrl }).eq("id", docId);
+    } catch (error) {
+      return {
+        ok: false,
+        error: error instanceof Error ? error.message : "Falha no upload do PDF.",
+      };
+    }
+  }
+
+  revalidatePath("/transparencia");
+  return { ok: true, id: docId };
+}
+
+export async function deleteTransparencyDocumentAction(id: string): Promise<ActionResult> {
+  await assertAdmin();
+  const supabase = await getTypedSupabase();
+
+  const { error } = await supabase.from("transparency_documents").delete().eq("id", id);
+  if (error) {
+    return { ok: false, error: "Não foi possível excluir o documento." };
+  }
+
+  await supabase.storage.from("club-assets").remove([transparencyStoragePath(id)]);
+  revalidatePath("/transparencia");
+
+  return { ok: true };
 }

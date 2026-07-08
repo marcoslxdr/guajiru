@@ -4,6 +4,7 @@ import { logoutAction } from "@/lib/admin/actions";
 
 const navItems = [
   { href: "/admin/posts", label: "Notícias" },
+  { href: "/admin/transparencia", label: "Transparência" },
   { href: "/admin/settings", label: "Configurações" },
 ];
 
