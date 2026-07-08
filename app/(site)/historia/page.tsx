@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
+import { BodyText } from "@/components/body-text";
 import { SectionHeading } from "@/components/site/section-heading";
-import { RichText } from "@/components/portable-text";
 import { clubFallbacks } from "@/lib/fallbacks";
-import { getPageHistoria } from "@/lib/sanity/queries";
-import type { PortableTextBlock } from "@portabletext/types";
+import { getPageHistoria } from "@/lib/supabase/queries";
 
 export const metadata: Metadata = {
   title: "História",
@@ -11,18 +10,6 @@ export const metadata: Metadata = {
     "História do Clube Desportivo Guajiru — remo, movimento olímpico e fundação em Extremoz, RN.",
   keywords: ["história Guajiru", "remo Extremoz", "clube esportivo RN"],
 };
-
-function toBlocks(text: string): PortableTextBlock[] {
-  return [
-    {
-      _type: "block",
-      _key: "fallback",
-      style: "normal",
-      markDefs: [],
-      children: [{ _type: "span", _key: "span", text, marks: [] }],
-    },
-  ];
-}
 
 export default async function HistoriaPage() {
   const page = await getPageHistoria();
@@ -37,7 +24,7 @@ export default async function HistoriaPage() {
       />
 
       <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr]">
-        <RichText value={page?.narrative ?? toBlocks(clubFallbacks.historyIntro)} />
+        <BodyText text={page?.narrative ?? clubFallbacks.historyIntro} />
         <aside className="rounded-2xl border border-border bg-muted p-6">
           <h2 className="mb-4 font-[family-name:var(--font-bebas)] text-3xl tracking-wide">Fundadores</h2>
           <ul className="space-y-4">

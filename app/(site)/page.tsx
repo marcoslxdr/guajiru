@@ -4,7 +4,7 @@ import { NewsCard } from "@/components/site/news-card";
 import { SectionHeading } from "@/components/site/section-heading";
 import { SportsOrganizationJsonLd } from "@/components/seo/json-ld";
 import { clubFallbacks } from "@/lib/fallbacks";
-import { getGalleryImages, getLatestPosts } from "@/lib/sanity/queries";
+import { getGalleryImages, getLatestPosts } from "@/lib/supabase/queries";
 
 export default async function HomePage() {
   const [posts, gallery] = await Promise.all([getLatestPosts(3), getGalleryImages()]);
@@ -38,7 +38,7 @@ export default async function HomePage() {
           {posts.length ? (
             <div className="grid gap-6 md:grid-cols-3">
               {posts.map((post) => (
-                <NewsCard key={post._id} post={post} />
+                <NewsCard key={post.id} post={post} />
               ))}
             </div>
           ) : (

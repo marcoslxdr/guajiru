@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { contactSchema } from "@/lib/forms/schemas";
 import { sendFormEmail } from "@/lib/forms/send-email";
 import { verifyTurnstile } from "@/lib/forms/verify-turnstile";
-import { getSiteSettings } from "@/lib/sanity/queries";
+import { getContactEmail } from "@/lib/supabase/queries";
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -22,8 +22,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Verificação anti-spam falhou" }, { status: 403 });
   }
 
-  const settings = await getSiteSettings();
-  const to = settings?.contactEmail ?? process.env.CONTACT_EMAIL;
+  const to = await getContactEmail();
   if (!to) {
     return NextResponse.json({ error: "E-mail de destino não configurado" }, { status: 500 });
   }

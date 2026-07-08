@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DocumentList } from "@/components/site/document-list";
 import { SectionHeading } from "@/components/site/section-heading";
-import { getTransparencyDocuments } from "@/lib/sanity/queries";
+import { getTransparencyDocuments } from "@/lib/supabase/queries";
 
 export const metadata: Metadata = {
   title: "Transparência",

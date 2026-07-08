@@ -3,7 +3,7 @@ import { AssociacaoForm } from "@/components/forms/associacao-form";
 import { ContactForm } from "@/components/forms/contact-form";
 import { SectionHeading } from "@/components/site/section-heading";
 import { clubFallbacks } from "@/lib/fallbacks";
-import { getSiteSettings } from "@/lib/sanity/queries";
+import { getSiteSettings } from "@/lib/supabase/queries";
 
 export const metadata: Metadata = {
   title: "Contato",
@@ -13,17 +13,13 @@ export const metadata: Metadata = {
 
 export default async function ContatoPage() {
   const settings = await getSiteSettings();
-  const lat = settings?.mapLat ?? clubFallbacks.mapLat;
-  const lng = settings?.mapLng ?? clubFallbacks.mapLng;
+  const lat = settings?.map_lat ?? clubFallbacks.mapLat;
+  const lng = settings?.map_lng ?? clubFallbacks.mapLng;
   const address = settings?.address ?? clubFallbacks.address;
 
   return (
     <div className="mx-auto w-full max-w-6xl px-6 py-20">
-      <SectionHeading
-        eyebrow="Contato"
-        title="Fale com o clube"
-        description={address}
-      />
+      <SectionHeading eyebrow="Contato" title="Fale com o clube" description={address} />
 
       <div className="grid gap-12 lg:grid-cols-2">
         <section id="contato">

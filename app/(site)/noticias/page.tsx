@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { NewsCard } from "@/components/site/news-card";
 import { SectionHeading } from "@/components/site/section-heading";
-import { getAllPosts } from "@/lib/sanity/queries";
+import { getAllPosts } from "@/lib/supabase/queries";
 
 export const metadata: Metadata = {
   title: "Notícias",
@@ -23,13 +23,11 @@ export default async function NoticiasPage() {
       {posts.length ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
-            <NewsCard key={post._id} post={post} />
+            <NewsCard key={post.id} post={post} />
           ))}
         </div>
       ) : (
-        <p className="text-muted-foreground">
-          Nenhuma notícia publicada ainda. Volte em breve.
-        </p>
+        <p className="text-muted-foreground">Nenhuma notícia publicada ainda. Volte em breve.</p>
       )}
     </div>
   );

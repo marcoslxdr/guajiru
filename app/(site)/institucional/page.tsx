@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
+import { BodyText } from "@/components/body-text";
 import { SectionHeading } from "@/components/site/section-heading";
-import { RichText } from "@/components/portable-text";
 import { clubFallbacks } from "@/lib/fallbacks";
-import { getPageInstitucional } from "@/lib/sanity/queries";
-import type { PortableTextBlock } from "@portabletext/types";
+import { getPageInstitucional } from "@/lib/supabase/queries";
 
 export const metadata: Metadata = {
   title: "Institucional",
@@ -11,18 +10,6 @@ export const metadata: Metadata = {
     "Missão, visão e valores do Clube Desportivo Guajiru — esporte e preservação ambiental em Extremoz, RN.",
   keywords: ["clube esportivo Extremoz", "missão Guajiru", "remo RN"],
 };
-
-function toBlocks(text: string): PortableTextBlock[] {
-  return [
-    {
-      _type: "block",
-      _key: "fallback",
-      style: "normal",
-      markDefs: [],
-      children: [{ _type: "span", _key: "span", text, marks: [] }],
-    },
-  ];
-}
 
 export default async function InstitucionalPage() {
   const page = await getPageInstitucional();
@@ -39,11 +26,11 @@ export default async function InstitucionalPage() {
       <div className="grid gap-12 lg:grid-cols-3">
         <section className="space-y-3">
           <h2 className="font-[family-name:var(--font-bebas)] text-3xl tracking-wide text-primary">Missão</h2>
-          <RichText value={page?.mission ?? toBlocks(clubFallbacks.mission)} />
+          <BodyText text={page?.mission ?? clubFallbacks.mission} />
         </section>
         <section className="space-y-3">
           <h2 className="font-[family-name:var(--font-bebas)] text-3xl tracking-wide text-primary">Visão</h2>
-          <RichText value={page?.vision ?? toBlocks(clubFallbacks.vision)} />
+          <BodyText text={page?.vision ?? clubFallbacks.vision} />
         </section>
         <section className="space-y-3">
           <h2 className="font-[family-name:var(--font-bebas)] text-3xl tracking-wide text-primary">Valores</h2>

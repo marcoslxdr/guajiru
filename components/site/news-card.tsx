@@ -1,14 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { urlFor } from "@/lib/sanity/image";
-import type { Post } from "@/lib/sanity/types";
+import type { Post } from "@/lib/supabase/types";
 
 export function NewsCard({ post }: { post: Post }) {
   return (
     <article className="rounded-2xl border border-border bg-background p-5 shadow-sm">
-      {post.coverImage ? (
+      {post.cover_image_url ? (
         <Image
-          src={urlFor(post.coverImage).width(600).height(340).url()}
+          src={post.cover_image_url}
           alt={post.title}
           width={600}
           height={340}
@@ -19,7 +18,7 @@ export function NewsCard({ post }: { post: Post }) {
       )}
       <p className="text-xs uppercase tracking-wide text-secondary">{post.category}</p>
       <h3 className="mt-2 font-[family-name:var(--font-bebas)] text-2xl tracking-wide">
-        <Link href={`/noticias/${post.slug.current}`} className="hover:text-primary">
+        <Link href={`/noticias/${post.slug}`} className="hover:text-primary">
           {post.title}
         </Link>
       </h3>

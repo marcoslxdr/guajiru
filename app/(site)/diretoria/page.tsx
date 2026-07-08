@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { BoardMemberCard } from "@/components/site/board-member-card";
 import { SectionHeading } from "@/components/site/section-heading";
 import { clubFallbacks } from "@/lib/fallbacks";
-import { getPageDiretoria } from "@/lib/sanity/queries";
+import { getPageDiretoria } from "@/lib/supabase/queries";
 
 export const metadata: Metadata = {
   title: "Diretoria",
@@ -14,15 +14,15 @@ export const metadata: Metadata = {
 export default async function DiretoriaPage() {
   const page = await getPageDiretoria();
 
-  const boardMembers = page?.boardMembers?.length
-    ? page.boardMembers
+  const boardMembers = page?.board_members?.length
+    ? page.board_members
     : clubFallbacks.boardRoles.map((role) => ({ role, name: "" }));
 
-  const fiscalCouncil = page?.fiscalCouncil?.length
-    ? page.fiscalCouncil
+  const fiscalCouncil = page?.fiscal_council?.length
+    ? page.fiscal_council
     : clubFallbacks.fiscalCouncil;
 
-  const article13Note = page?.article13Note ?? clubFallbacks.article13Note;
+  const article13Note = page?.article13_note ?? clubFallbacks.article13Note;
 
   return (
     <div className="mx-auto w-full max-w-6xl px-6 py-20">

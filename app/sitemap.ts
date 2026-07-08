@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getAllPosts } from "@/lib/sanity/queries";
+import { getAllPosts } from "@/lib/supabase/queries";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://guajiru.vercel.app";
 
@@ -21,8 +21,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
     })),
     ...posts.map((post) => ({
-      url: `${baseUrl}/noticias/${post.slug.current}`,
-      lastModified: new Date(post.publishedAt),
+      url: `${baseUrl}/noticias/${post.slug}`,
+      lastModified: new Date(post.published_at),
     })),
   ];
 }

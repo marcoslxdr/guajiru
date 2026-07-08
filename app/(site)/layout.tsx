@@ -1,6 +1,6 @@
 import { Footer } from "@/components/site/footer";
 import { Header } from "@/components/site/header";
-import { getSiteSettings } from "@/lib/sanity/queries";
+import { getSiteSettings } from "@/lib/supabase/queries";
 import { clubFallbacks } from "@/lib/fallbacks";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {

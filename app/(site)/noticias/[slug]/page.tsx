@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { RichText } from "@/components/portable-text";
-import { urlFor } from "@/lib/sanity/image";
-import { getAllPosts, getPostBySlug } from "@/lib/sanity/queries";
+import { BodyText } from "@/components/body-text";
+import { getAllPosts, getPostBySlug } from "@/lib/supabase/queries";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -11,7 +10,7 @@ type PageProps = {
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
-  return posts.map((post) => ({ slug: post.slug.current }));
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -36,11 +35,11 @@ export default async function NoticiaDetailPage({ params }: PageProps) {
       <p className="text-sm uppercase tracking-wide text-secondary">{post.category}</p>
       <h1 className="mt-2 font-[family-name:var(--font-bebas)] text-5xl tracking-wide">{post.title}</h1>
       <p className="mt-2 text-sm text-muted-foreground">
-        {new Date(post.publishedAt).toLocaleDateString("pt-BR")}
+        {new Date(post.published_at).toLocaleDateString("pt-BR")}
       </p>
-      {post.coverImage ? (
+      {post.cover_image_url ? (
         <Image
-          src={urlFor(post.coverImage).width(1200).height(630).url()}
+          src={post.cover_image_url}
           alt={post.title}
           width={1200}
           height={630}
@@ -48,7 +47,7 @@ export default async function NoticiaDetailPage({ params }: PageProps) {
         />
       ) : null}
       <div className="mt-8">
-        <RichText value={post.body} />
+        <BodyText text={post.body} />
       </div>
     </article>
   );
