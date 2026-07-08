@@ -15,3 +15,5 @@ Site institucional e portal do **Clube Desportivo Guajiru** (Extremoz, RN) — n
 **Implementation plan:** `docs/superpowers/plans/2026-07-08-clube-guajiru.md`
 
 **Brand colors:** `#5F9235`, `#C5D14D`, `#DD8FB8`, `#B7728A`. Line-height 1.25.
+
+**Env setup:** copy `.env.example` → `.env.local`. Build works without Sanity project ID (uses fallbacks); forms need Resend + Turnstile for production.
