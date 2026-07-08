@@ -20,6 +20,10 @@ Site institucional e portal do **Clube Desportivo Guajiru** (Extremoz, RN).
 
 **Content editing:** Supabase Table Editor + Storage bucket `club-assets`. Sem painel custom na v1.
 
+**Transparência:** tabela `transparency_documents` — campos `title`, `doc_type` (`ata` | `estatuto` | `relatório`), `file_url` (URL pública do PDF no bucket `club-assets`), `published_at`. Página `/transparencia` agrupa por tipo; empty state até primeiro insert.
+
 **Modalidades:** tabela `modalities` no Supabase — editar textos, `highlights` (JSON), `gallery` (JSON), `training_focus`, `audience`, `training_schedule`. Campos pendentes usam placeholder entre colchetes, ex. `[Horários de treino — preencher no Supabase]` (renderizados com borda tracejada na página). Fallback estático em `lib/modalities.ts` se Supabase indisponível.
 
 **Dev server:** rodar `npm run dev` em terminal dedicado (não no terminal do agente). Probe `GET /health` → `app/health/route.ts`. Agentes: não rodar `npm run build` com dev ativo; após edições parciais, usuário pode precisar hard refresh (`Cmd+Shift+R`).
+
+**Deploy (Vercel):** projeto `insightfy/guajiru` → `https://guajiru.vercel.app`. Manter `vercel.json` com `"framework": "nextjs"` — se o preset no dashboard ficar **Other** com output `public/`, o deploy retorna 404 da Vercel (não do Next). SSO deployment protection desligado (site público). Redeploy: `vercel --prod`.
