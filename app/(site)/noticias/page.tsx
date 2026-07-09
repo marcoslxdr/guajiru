@@ -21,10 +21,15 @@ export default async function NoticiasPage() {
       />
 
       {posts.length ? (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post) => (
-            <NewsCard key={post.id} post={post} />
-          ))}
+        <div className="space-y-10">
+          <NewsCard post={posts[0]} featured />
+          {posts.length > 1 ? (
+            <div className="grid gap-8 border-t border-border pt-10 md:grid-cols-2">
+              {posts.slice(1).map((post) => (
+                <NewsCard key={post.id} post={post} />
+              ))}
+            </div>
+          ) : null}
         </div>
       ) : (
         <p className="text-muted-foreground">Nenhuma notícia publicada ainda. Volte em breve.</p>

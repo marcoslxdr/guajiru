@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HeroBackgroundSlider } from "@/components/site/hero-background-slider";
 
 type HeroProps = {
   slogan: string;
@@ -7,33 +8,42 @@ type HeroProps = {
 
 export function Hero({ slogan, foundingDate }: HeroProps) {
   return (
-    <section className="relative overflow-hidden border-b border-border bg-muted">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(197,209,77,0.3),_transparent_55%)]" />
-      <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-6 px-6 py-24 sm:py-32">
-        <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">
-          Extremoz · Rio Grande do Norte · Fundado em {foundingDate}
-        </p>
-        <h1 className="max-w-4xl font-[family-name:var(--font-bebas)] text-5xl leading-tight tracking-wide sm:text-7xl">
-          {slogan}
-        </h1>
-        <p className="max-w-2xl text-lg text-muted-foreground">
-          Esporte, remo e preservação ambiental na lagoa de Extremoz.
-        </p>
-        <div className="flex flex-col gap-4 sm:flex-row">
-          <Link
-            href="/noticias"
-            className="inline-flex h-12 items-center justify-center rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-          >
-            Ver notícias
-          </Link>
-          <Link
-            href="/contato#associar"
-            className="inline-flex h-12 items-center justify-center rounded-full border border-border bg-background px-6 text-sm font-medium transition-colors hover:bg-muted"
-          >
-            Quero me associar
-          </Link>
+    <section className="relative min-h-[min(88vh,900px)] overflow-hidden border-b border-primary/40">
+      <HeroBackgroundSlider />
+
+      <div aria-hidden className="hero-overlay absolute inset-0" />
+
+      <div className="relative mx-auto flex min-h-[min(88vh,900px)] w-full max-w-6xl flex-col justify-end px-6 pb-14 pt-28 sm:pb-16 sm:pt-32 lg:justify-center lg:pb-24">
+        <div className="hero-readable max-w-2xl space-y-6">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <span className="inline-flex items-center rounded-full bg-accent px-3 py-1 text-xs font-bold text-foreground">
+              Remo · Basquete · Atletismo
+            </span>
+            <p className="text-sm font-semibold text-primary-foreground/90">
+              Extremoz, RN · Fundado em {foundingDate}
+            </p>
+          </div>
+
+          <h1 className="font-display text-[clamp(2.85rem,7vw,5.25rem)] leading-[0.98] text-primary-foreground">
+            {slogan}
+          </h1>
+
+          <p className="max-w-xl text-lg leading-relaxed text-primary-foreground/90 sm:text-xl">
+            Remo, basquete e atletismo com preservação ambiental: formação de atletas e cidadãos em Extremoz.
+          </p>
+
+          <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center">
+            <Link href="/noticias" className="btn-hero-primary">
+              Ver notícias
+            </Link>
+            <Link href="/contato#associar" className="btn-hero-outline">
+              Quero me associar
+            </Link>
+          </div>
         </div>
       </div>
+
+      <div aria-hidden className="absolute inset-x-0 bottom-0 h-1 bg-accent" />
     </section>
   );
 }

@@ -6,7 +6,7 @@ export default function NotFound() {
       <p className="text-sm uppercase tracking-wide text-muted-foreground">404</p>
       <h1 className="font-[family-name:var(--font-bebas)] text-5xl tracking-wide">Página não encontrada</h1>
       <p className="text-muted-foreground">O conteúdo que você procura não existe ou foi movido.</p>
-      <Link href="/" className="rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground">
+      <Link href="/" className="btn-primary">
         Voltar ao início
       </Link>
     </div>

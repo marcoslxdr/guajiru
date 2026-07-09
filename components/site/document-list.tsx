@@ -1,17 +1,41 @@
+import Link from "next/link";
 import type { TransparencyDocument } from "@/lib/supabase/types";
+import { DocumentCard } from "@/components/site/document-card";
 
-const labels: Record<TransparencyDocument["doc_type"], string> = {
-  ata: "Atas",
+const sectionLabels: Record<TransparencyDocument["doc_type"], string> = {
   estatuto: "Estatuto",
-  relatório: "Relatórios Financeiros",
+  ata: "Atas de reunião",
+  relatório: "Relatórios financeiros",
 };
+
+const sectionDescriptions: Record<TransparencyDocument["doc_type"], string> = {
+  estatuto: "Regras de funcionamento e governança do clube.",
+  ata: "Registros oficiais das reuniões da diretoria e assembleias.",
+  relatório: "Prestação de contas e demonstrativos financeiros.",
+};
+
+const sectionAnchors: Record<TransparencyDocument["doc_type"], string> = {
+  estatuto: "estatuto",
+  ata: "atas",
+  relatório: "relatorios",
+};
+
+const DOC_TYPE_ORDER: TransparencyDocument["doc_type"][] = ["estatuto", "ata", "relatório"];
 
 export function DocumentList({ documents }: { documents: TransparencyDocument[] }) {
   if (!documents.length) {
     return (
-      <p className="text-muted-foreground">
-        Documentos serão publicados em breve pela diretoria do clube.
-      </p>
+      <div className="rounded-2xl border border-dashed border-border bg-muted/50 p-8 text-center sm:p-12">
+        <p className="font-display text-2xl text-foreground">Documentos em preparação</p>
+        <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-muted-foreground">
+          Atas, estatuto e relatórios financeiros serão publicados aqui pela diretoria do clube.
+          A gestão é voluntária e transparente.
+        </p>
+        <Link href="/diretoria" className="link-arrow mt-6 inline-flex">
+          Conhecer a diretoria
+          <span aria-hidden>→</span>
+        </Link>
+      </div>
     );
   }
 
@@ -21,29 +45,44 @@ export function DocumentList({ documents }: { documents: TransparencyDocument[] 
     return acc;
   }, {});
 
+  const activeTypes = DOC_TYPE_ORDER.filter((type) => groups[type]?.length);
+
   return (
-    <div className="space-y-10">
-      {Object.entries(groups).map(([type, docs]) => (
-        <section key={type}>
-          <h3 className="mb-4 font-[family-name:var(--font-bebas)] text-3xl tracking-wide">
-            {labels[type as TransparencyDocument["doc_type"]]}
-          </h3>
-          <ul className="space-y-3">
-            {docs.map((doc) => (
-              <li key={doc.id}>
-                <a
-                  href={doc.file_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary underline-offset-4 hover:underline"
-                >
-                  {doc.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ))}
+    <div className="space-y-12">
+      {activeTypes.length > 1 ? (
+        <nav aria-label="Categorias de documentos" className="flex flex-wrap gap-2">
+          {activeTypes.map((type) => (
+            <a
+              key={type}
+              href={`#${sectionAnchors[type]}`}
+              className="rounded-full border border-border bg-surface px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-primary/40 hover:text-primary"
+            >
+              {sectionLabels[type]}
+            </a>
+          ))}
+        </nav>
+      ) : null}
+
+      {activeTypes.map((type) => {
+        const docs = groups[type];
+        return (
+          <section key={type} id={sectionAnchors[type]} className="scroll-mt-28 space-y-4">
+            <div className="space-y-1">
+              <h3 className="font-display text-3xl leading-tight text-foreground">
+                {sectionLabels[type]}
+              </h3>
+              <p className="text-sm text-muted-foreground">{sectionDescriptions[type]}</p>
+            </div>
+            <ul className="grid gap-3">
+              {docs.map((doc) => (
+                <li key={doc.id}>
+                  <DocumentCard document={doc} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })}
     </div>
   );
 }

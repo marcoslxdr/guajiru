@@ -36,6 +36,18 @@ export const metadata: Metadata = {
       "Talento é genético: nós forjamos campeões. Esporte e preservação ambiental em Extremoz, RN.",
     locale: "pt_BR",
     type: "website",
+    images: [
+      {
+        url: "/logo-colorida.png",
+        width: 294,
+        height: 314,
+        alt: "Clube Desportivo Guajiru",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    images: ["/logo-colorida.png"],
   },
 };
 
@@ -47,6 +59,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
+      data-scroll-behavior="smooth"
       className={`${bebasNeue.variable} ${sourceSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>

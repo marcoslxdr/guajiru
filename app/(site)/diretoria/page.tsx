@@ -32,7 +32,7 @@ export default async function DiretoriaPage() {
         description="Transparência na gestão do clube."
       />
 
-      <div className="mb-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mb-12 grid gap-x-8 gap-y-2 sm:grid-cols-2 lg:grid-cols-3">
         {boardMembers.map((member) => (
           <BoardMemberCard key={member.role} role={member.role} name={member.name} />
         ))}

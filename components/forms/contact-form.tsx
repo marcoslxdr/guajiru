@@ -52,15 +52,15 @@ export function ContactForm() {
 
       <div>
         <label htmlFor="contact-name" className="mb-1 block text-sm font-medium">Nome</label>
-        <input id="contact-name" name="name" required className="w-full rounded-lg border border-border bg-background px-3 py-2" />
+        <input id="contact-name" name="name" required className="input-field" />
       </div>
       <div>
         <label htmlFor="contact-email" className="mb-1 block text-sm font-medium">E-mail</label>
-        <input id="contact-email" name="email" type="email" required className="w-full rounded-lg border border-border bg-background px-3 py-2" />
+        <input id="contact-email" name="email" type="email" required className="input-field" />
       </div>
       <div>
         <label htmlFor="contact-subject" className="mb-1 block text-sm font-medium">Assunto</label>
-        <select id="contact-subject" name="subject" required className="w-full rounded-lg border border-border bg-background px-3 py-2">
+        <select id="contact-subject" name="subject" required className="input-field">
           {subjects.map((subject) => (
             <option key={subject} value={subject}>{subject}</option>
           ))}
@@ -68,16 +68,12 @@ export function ContactForm() {
       </div>
       <div>
         <label htmlFor="contact-message" className="mb-1 block text-sm font-medium">Mensagem</label>
-        <textarea id="contact-message" name="message" required rows={5} className="w-full rounded-lg border border-border bg-background px-3 py-2" />
+        <textarea id="contact-message" name="message" required rows={5} className="input-field" />
       </div>
 
       <TurnstileWidget onVerify={setTurnstileToken} />
 
-      <button
-        type="submit"
-        disabled={status === "loading"}
-        className="inline-flex h-11 items-center justify-center rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground disabled:opacity-60"
-      >
+      <button type="submit" disabled={status === "loading"} className="btn-primary h-11">
         {status === "loading" ? "Enviando..." : "Enviar mensagem"}
       </button>
 
