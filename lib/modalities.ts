@@ -115,6 +115,21 @@ export const modalityFallbacks: Modality[] = [
         alt: "Momento de treino coletivo de basquete",
         caption: "Treino coletivo com foco em jogo em equipe",
       },
+      {
+        src: "/modalidades/basquete/eventos/3x3-2024.jpg",
+        alt: "Campeonato Guajiru 3x3 2024",
+        caption: "Campeonato Guajiru 3x3 — maio de 2024",
+      },
+      {
+        src: "/modalidades/basquete/eventos/cbi-sub15-2025.jpg",
+        alt: "Equipe Sub-15 feminina no CBI em Foz do Iguaçu",
+        caption: "CBI Sub-15 Feminino — Foz do Iguaçu, 2025",
+      },
+      {
+        src: "/modalidades/basquete/eventos/copa-jhonata-2025.jpg",
+        alt: "Participação na Copa 3x3 Jhonata Fonseca",
+        caption: "Copa 3x3 Jhonata Fonseca — vice Sub-18, 2025",
+      },
     ],
     accent: "accent",
     keywords: ["basquete Extremoz", "basquete Guajiru", "treino basquete RN"],
@@ -129,16 +144,18 @@ export const modalityFallbacks: Modality[] = [
     ],
     highlights: [
       {
-        title: "Fundamentos",
-        description: "Base técnica sólida para evolução segura e progressiva na quadra.",
+        title: "Campeonato Guajiru 3x3 (2024)",
+        description:
+          "Pontapé dos eventos do clube em 25/05/2024: 6 times, sistema FIBA 3x3 e arbitragem oficial da FNB.",
       },
       {
-        title: "Jogo coletivo",
-        description: "Treinos que priorizam comunicação, movimentação e decisões em equipe.",
+        title: "CBI Sub-15 Feminino",
+        description:
+          "14ª melhor equipe do país em Foz do Iguaçu-PR, entre mais de 29 clubes, sob direção de Nery Lúcia.",
       },
       {
-        title: "Disciplina",
-        description: "Rotina de treino com foco, respeito aos colegas e compromisso com o grupo.",
+        title: "Copa 3x3 Jhonata Fonseca",
+        description: "Dois times Sub-18 e vice-campeonato da categoria em 2025.",
       },
       {
         title: "Representar Extremoz",
@@ -157,10 +174,25 @@ export const modalityFallbacks: Modality[] = [
       "Os treinos trabalham técnica de corrida, preparação física e mentalidade competitiva alinhada aos valores do Guajiru.",
     ],
     heroImage: {
-      src: "/modalidades/atletismo/01.jpeg",
-      alt: "Atletas de atletismo em treino e competição",
+      src: "/modalidades/atletismo/eventos/festival-recife-2025.jpg",
+      alt: "Carlos Henrique da Silva Macedo, campeão Sub-20 no arremesso de peso",
     },
     gallery: [
+      {
+        src: "/modalidades/atletismo/eventos/estadual-2025.jpg",
+        alt: "Estadual de Atletismo 2025 — arremesso de peso e disco",
+        caption: "Estadual 2025 — 2 ouros e 1 bronze",
+      },
+      {
+        src: "/modalidades/atletismo/eventos/festival-recife-2025.jpg",
+        alt: "Carlos Henrique da Silva Macedo no Festival de Atletismo de Recife",
+        caption: "Campeão Sub-20 — arremesso de peso em Recife",
+      },
+      {
+        src: "/modalidades/atletismo/eventos/trofeu-brasil-2025.jpg",
+        alt: "Participação no Troféu Brasil de Atletismo 2025",
+        caption: "XLIV Troféu Brasil Loterias Caixa 2025",
+      },
       {
         src: "/modalidades/atletismo/01.jpeg",
         alt: "Corredores em prova de atletismo",
@@ -168,7 +200,7 @@ export const modalityFallbacks: Modality[] = [
       },
     ],
     accent: "secondary",
-    keywords: ["atletismo Extremoz", "atletismo Guajiru", "corrida RN"],
+    keywords: ["atletismo Extremoz", "atletismo Guajiru", "arremesso de peso RN"],
     location: "Estrutura esportiva em Extremoz, RN",
     audience: "[Categorias etárias — preencher no Supabase]",
     trainingSchedule: "[Horários de treino — preencher no Supabase]",
@@ -180,20 +212,23 @@ export const modalityFallbacks: Modality[] = [
     ],
     highlights: [
       {
-        title: "Velocidade",
-        description: "Trabalho de explosão, partida e sprint em provas curtas.",
+        title: "Estadual 2025",
+        description:
+          "2 medalhas de ouro e 1 bronze no arremesso de peso e disco, com Jhonatha Hebert Cruz e Carlos Henrique da Silva Macedo.",
       },
       {
-        title: "Resistência",
-        description: "Condicionamento para provas de média e longa distância.",
+        title: "Festival de Recife",
+        description:
+          "Carlos Henrique da Silva Macedo campeão Sub-20 no arremesso de peso, com treinador Rogério Oliveira.",
+      },
+      {
+        title: "Troféu Brasil",
+        description:
+          "Participação no XLIV Troféu Brasil Loterias Caixa 2025 com apoio do CBC — índice nacional no disco.",
       },
       {
         title: "Pista e campo",
         description: "Formação em múltiplas provas do atletismo olímpico.",
-      },
-      {
-        title: "Superação individual",
-        description: "Metas pessoais, evolução constante e disciplina nos treinos.",
       },
     ],
   },

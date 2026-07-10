@@ -22,7 +22,9 @@ Site institucional e portal do **Clube Desportivo Guajiru** (Extremoz, RN).
 
 **Admin bootstrap:** Supabase Auth → criar user → `app_metadata: { "role": "admin" }` → desabilitar signup público → login em `/admin/login`.
 
-**Transparência:** tabela `transparency_documents` — campos `title`, `doc_type` (`ata` | `estatuto` | `relatório`), `file_url` (URL pública do PDF no bucket `club-assets`), `published_at`. Página `/transparencia` agrupa por tipo; empty state até primeiro insert.
+**Transparência:** tabela `transparency_documents` — campos `title`, `doc_type` (`ata` | `estatuto` | `relatório`), `file_url` (URL pública: bucket `club-assets` **ou** path em `public/transparencia/`), `published_at`. Página `/transparencia` agrupa por tipo.
+
+**Conteúdo fonte (envio Marcos):** raw em `content/envio-marcos/` (não servir direto). Assets publicados em `public/diretoria/`, `public/eventos/`, `public/modalidades/*/eventos/`, `public/transparencia/`. Diretoria: `board_members` JSON com `role`, `name`, `photo`. Marcos históricos: `clubFallbacks.historyMilestones` em `/historia`. Notícias reais dos eventos no Supabase `posts`.
 
 **Modalidades:** tabela `modalities` — editar em `/admin/modalidades` (resumo, descrição, local, audience, horários, foco, published). Campos ainda vazios usam placeholder entre colchetes, ex. `[Horários de treino — preencher no Supabase]` (borda tracejada na página). Gallery/highlights JSON: Table Editor. Fallback estático em `lib/modalities.ts` se Supabase indisponível. RLS: public read `published=true`; admin JWT role.
 

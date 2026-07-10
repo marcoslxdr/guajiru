@@ -123,8 +123,8 @@ export default async function ModalityDetailPage({ params }: PageProps) {
           <section className="mt-16">
             <SectionHeading
               eyebrow="Galeria"
-              title="Momentos de treino"
-              description={`Fotos da modalidade de ${modality.name.toLowerCase()} no clube.`}
+              title="Momentos da modalidade"
+              description={`Treinos e competições de ${modality.name.toLowerCase()} no Clube Desportivo Guajiru.`}
             />
             <ModalityGallery images={modality.gallery} />
           </section>

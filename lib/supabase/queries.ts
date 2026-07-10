@@ -129,7 +129,7 @@ export async function getPageHistoria(): Promise<PageHistoria | null> {
 export async function getPageDiretoria(): Promise<PageDiretoria | null> {
   if (!hasSupabase) {
     return {
-      board_members: clubFallbacks.boardRoles.map((role) => ({ role, name: "" })),
+      board_members: clubFallbacks.boardMembers,
       fiscal_council: clubFallbacks.fiscalCouncil,
       article13_note: clubFallbacks.article13Note,
     };

@@ -16,7 +16,7 @@ export default async function DiretoriaPage() {
 
   const boardMembers = page?.board_members?.length
     ? page.board_members
-    : clubFallbacks.boardRoles.map((role) => ({ role, name: "" }));
+    : clubFallbacks.boardMembers;
 
   const fiscalCouncil = page?.fiscal_council?.length
     ? page.fiscal_council
@@ -29,17 +29,24 @@ export default async function DiretoriaPage() {
       <SectionHeading
         eyebrow="Governança"
         title="Diretoria e Conselho Fiscal"
-        description="Transparência na gestão do clube."
+        description="Gestão voluntária do Clube Desportivo Guajiru."
       />
 
-      <div className="mb-12 grid gap-x-8 gap-y-2 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mb-16 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
         {boardMembers.map((member) => (
-          <BoardMemberCard key={member.role} role={member.role} name={member.name} />
+          <BoardMemberCard
+            key={`${member.role}-${member.name}`}
+            role={member.role}
+            name={member.name}
+            photo={member.photo}
+          />
         ))}
       </div>
 
       <section className="mb-12 rounded-2xl border border-border bg-muted p-6">
-        <h2 className="mb-4 font-[family-name:var(--font-bebas)] text-3xl tracking-wide">Conselho Fiscal</h2>
+        <h2 className="mb-4 font-[family-name:var(--font-bebas)] text-3xl tracking-wide">
+          Conselho Fiscal
+        </h2>
         <ul className="space-y-2">
           {fiscalCouncil.map((name) => (
             <li key={name} className="text-base font-medium">

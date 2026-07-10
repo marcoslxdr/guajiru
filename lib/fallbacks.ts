@@ -1,3 +1,5 @@
+import type { BoardMember, HistoryMilestone } from "@/lib/supabase/types";
+
 export type ClubValue = {
   name: string;
   description: string;
@@ -45,14 +47,38 @@ export const clubFallbacks = {
     { name: "Altair Luiz de Souza Júnior", bio: undefined },
     { name: "Ivson Ferreira de Lima", bio: undefined },
   ] as { name: string; bio?: string }[],
-  boardRoles: [
-    "Presidente",
-    "Vice-presidente",
-    "Financeiro",
-    "Secretário",
-    "Patrimônio",
-    "Pres. Conselho de Atletas",
-  ],
+  boardMembers: [
+    {
+      role: "Presidente",
+      name: "Altair Luiz de Souza Júnior",
+      photo: "/diretoria/altair-junior.png",
+    },
+    {
+      role: "Vice-presidente",
+      name: "Ivson Ferreira de Lima",
+      photo: "/diretoria/ivson-ferreira.png",
+    },
+    {
+      role: "Secretário",
+      name: "Olyn Oscar",
+      photo: "/diretoria/olyn-oscar.png",
+    },
+    {
+      role: "Diretor Secretário",
+      name: "Silvio Teixeira",
+      photo: "/diretoria/silvio-teixeira.png",
+    },
+    {
+      role: "Patrimônio",
+      name: "Alison",
+      photo: "/diretoria/alison.png",
+    },
+    {
+      role: "Pres. Conselho de Atletas",
+      name: "David Manoel",
+      photo: "/diretoria/david-manoel.png",
+    },
+  ] satisfies BoardMember[],
   fiscalCouncil: [
     "Altair Luiz de Souza",
     "Lucas Basílio de Souza",
@@ -62,6 +88,57 @@ export const clubFallbacks = {
     "Conforme o Artigo 13 do Estatuto do clube, as funções de direção e conselho não são remuneradas.",
   transparencyIntro:
     "O Clube Desportivo Guajiru mantém esta página com documentos oficiais para consulta pública. Aqui você encontra o estatuto, atas de reuniões e relatórios financeiros — parte do nosso compromisso com gestão transparente e voluntária.",
+  historyMilestones: [
+    {
+      date: "01/03/2024",
+      title: "Fundação do clube",
+      summary:
+        "Fundação do Clube Desportivo Guajiru em Extremoz, RN, idealizado por Altair Luiz de Souza Júnior e Ivson Ferreira de Lima.",
+      modality: "clube",
+    },
+    {
+      date: "25/05/2024",
+      title: "Campeonato Guajiru 3x3",
+      summary:
+        "Evento realizado no dia 25 de maio de 2024, dando pontapé no desenvolvimento de projetos e eventos esportivos realizados pelo Guajiru, com participação de 6 times, quatro convidados e 2 formados por atletas nativos de Extremoz representando o Guajiru. Clubes convidados: Cohab de Ceará-Mirim, Panelas e ZnAllstars representando Natal, e NBM representando Macaíba. O campeonato teve um nível forte, com o Panelas se sagrando campeão e recebendo o prêmio no valor de 500,00 reais. Evento organizado dentro do sistema 3x3 da FIBA, com ranqueamento dos atletas e arbitragem oficial da FNB.",
+      modality: "basquete",
+    },
+    {
+      date: "2025",
+      title: "Copa 3x3 Jhonata Fonseca",
+      summary:
+        "Participação da copa Jonathan Fonseca de Basketball 3x3, com dois times sub-18, garantimos o vice-campeonato da categoria. Um início de trabalho que pouco a pouco colherá frutos.",
+      modality: "basquete",
+    },
+    {
+      date: "2025",
+      title: "CBI Sub-15 Feminino — Foz do Iguaçu",
+      summary:
+        "Participação no CBI Sub-15 Feminino de Basquete, realizado na cidade de Foz do Iguaçu-PR. Evento organizado e apoiado pelo CBC, que fomentou nossa participação. Nossa equipe, gerida pela professora e diretora do basquete do Guajiru, Nery Lúcia, obteve a colocação geral de 14ª melhor equipe de basquete feminino Sub-15 do país, entre mais de 29 clubes participantes, alguns deles dos maiores do país.",
+      modality: "basquete",
+    },
+    {
+      date: "2025",
+      title: "Estadual de Atletismo",
+      summary:
+        "Participação do Estadual de Atletismo na prova de Arremesso de peso e disco. Evento com resultado para o clube de 2 medalhas de Ouro e um Bronze, com participação dos atletas Jhonatha Hebert Cruz e Carlos Henrique da Silva Macedo, com suporte técnico do treinador Rogério.",
+      modality: "atletismo",
+    },
+    {
+      date: "2025",
+      title: "Festival de Atletismo de Recife",
+      summary:
+        "Carlos Henrique da Silva Macedo garantiu o título de campeão SUB-20 no arremesso de peso no Festival de Atletismo em Recife, com acompanhamento do treinador Rogério Oliveira.",
+      modality: "atletismo",
+    },
+    {
+      date: "2025",
+      title: "XLIV Troféu Brasil de Atletismo",
+      summary:
+        "Participação no CBI XLIV Troféu Brasil de Atletismo Loterias Caixa 2025, com delegação de Altair Jr (Direção de Esportes), Rogério (treinador) e Jonathan Herbert, que fez o índice nacional e participou da prova de arremesso de disco. Participação com apoio do Comitê Brasileiro de Clubes (CBC).",
+      modality: "atletismo",
+    },
+  ] satisfies HistoryMilestone[],
   address: "Extremoz, Rio Grande do Norte, Brasil",
   mapLat: -5.7056,
   mapLng: -35.3044,

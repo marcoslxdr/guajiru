@@ -39,10 +39,23 @@ export type PageHistoria = {
   founders: { name: string; bio?: string }[] | null;
 };
 
+export type BoardMember = {
+  role: string;
+  name: string;
+  photo?: string | null;
+};
+
 export type PageDiretoria = {
-  board_members: { role: string; name: string }[] | null;
+  board_members: BoardMember[] | null;
   fiscal_council: string[] | null;
   article13_note: string | null;
+};
+
+export type HistoryMilestone = {
+  date: string;
+  title: string;
+  summary: string;
+  modality?: "basquete" | "atletismo" | "remo" | "clube";
 };
 
 export type SiteSettings = {
