@@ -1,5 +1,5 @@
 import { getTypedSupabase } from "@/lib/supabase/typed-server";
-import type { Post, SiteSettings, TransparencyDocument } from "@/lib/supabase/types";
+import type { ModalityRow, Post, SiteSettings, TransparencyDocument } from "@/lib/supabase/types";
 
 export async function getAdminPosts(): Promise<Post[]> {
   const supabase = await getTypedSupabase();
@@ -37,4 +37,20 @@ export async function getAdminTransparencyDocumentById(id: string): Promise<Tran
   const supabase = await getTypedSupabase();
   const { data } = await supabase.from("transparency_documents").select("*").eq("id", id).maybeSingle();
   return data as TransparencyDocument | null;
+}
+
+export async function getAdminModalities(): Promise<ModalityRow[]> {
+  const supabase = await getTypedSupabase();
+  const { data } = await supabase
+    .from("modalities")
+    .select("*")
+    .order("sort_order", { ascending: true });
+
+  return (data ?? []) as ModalityRow[];
+}
+
+export async function getAdminModalityById(id: string): Promise<ModalityRow | null> {
+  const supabase = await getTypedSupabase();
+  const { data } = await supabase.from("modalities").select("*").eq("id", id).maybeSingle();
+  return data as ModalityRow | null;
 }

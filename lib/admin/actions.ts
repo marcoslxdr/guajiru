@@ -421,3 +421,66 @@ export async function deleteTransparencyDocumentAction(id: string): Promise<Acti
 
   return { ok: true };
 }
+
+function parseLines(value: FormDataEntryValue | null): string[] {
+  return String(value ?? "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
+function revalidateModalityPaths(slug?: string) {
+  revalidatePath("/modalidades");
+  if (slug) {
+    revalidatePath(`/modalidades/${slug}`);
+  }
+  revalidatePath("/", "layout");
+}
+
+export async function saveModalityAction(formData: FormData): Promise<ActionResult> {
+  await assertAdmin();
+
+  const id = String(formData.get("id") ?? "").trim();
+  if (!id) {
+    return { ok: false, error: "Modalidade inválida." };
+  }
+
+  const shortDescription = String(formData.get("short_description") ?? "").trim();
+  const description = String(formData.get("description") ?? "").trim();
+  const location = String(formData.get("location") ?? "").trim() || null;
+  const audience = String(formData.get("audience") ?? "").trim() || null;
+  const trainingSchedule = String(formData.get("training_schedule") ?? "").trim() || null;
+  const trainingFocus = parseLines(formData.get("training_focus"));
+  const published = formData.get("published") === "on";
+
+  if (!shortDescription) {
+    return { ok: false, error: "Resumo é obrigatório." };
+  }
+
+  if (!description) {
+    return { ok: false, error: "Descrição é obrigatória." };
+  }
+
+  const supabase = await getTypedSupabase();
+  const { data: existing } = await supabase.from("modalities").select("slug").eq("id", id).maybeSingle();
+
+  const { error } = await supabase
+    .from("modalities")
+    .update({
+      short_description: shortDescription,
+      description,
+      location,
+      audience,
+      training_schedule: trainingSchedule,
+      training_focus: trainingFocus,
+      published,
+    })
+    .eq("id", id);
+
+  if (error) {
+    return { ok: false, error: "Não foi possível salvar a modalidade." };
+  }
+
+  revalidateModalityPaths(existing?.slug);
+  return { ok: true, id };
+}

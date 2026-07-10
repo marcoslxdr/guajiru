@@ -40,45 +40,69 @@ export function Header({ modalities }: { modalities: ModalityNavLink[] }) {
           </div>
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Principal">
-          {navItems.slice(0, 2).map((item) => {
-            const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
-                  active
-                    ? "bg-accent text-foreground"
-                    : "text-primary-foreground/85 hover:bg-primary-foreground/10 hover:text-primary-foreground"
-                }`}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
+        <div className="flex items-center gap-2">
+          <nav className="hidden items-center gap-1 lg:flex" aria-label="Principal">
+            {navItems.slice(0, 2).map((item) => {
+              const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+                    active
+                      ? "bg-accent text-foreground"
+                      : "text-primary-foreground/85 hover:bg-primary-foreground/10 hover:text-primary-foreground"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
 
-          <ModalitiesMenu variant="desktop" modalities={modalities} />
+            <ModalitiesMenu variant="desktop" modalities={modalities} />
 
-          {navItems.slice(2).map((item) => {
-            const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
-                  active
-                    ? "bg-accent text-foreground"
-                    : "text-primary-foreground/85 hover:bg-primary-foreground/10 hover:text-primary-foreground"
-                }`}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
+            {navItems.slice(2).map((item) => {
+              const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+                    active
+                      ? "bg-accent text-foreground"
+                      : "text-primary-foreground/85 hover:bg-primary-foreground/10 hover:text-primary-foreground"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
 
-        <MobileNav modalities={modalities} />
+          <Link
+            href="/admin/login"
+            aria-label="Área de login"
+            title="Entrar"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary-foreground/25 bg-primary-foreground/10 text-primary-foreground transition-colors hover:bg-primary-foreground/20"
+          >
+            <svg
+              aria-hidden
+              viewBox="0 0 24 24"
+              className="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+              />
+            </svg>
+          </Link>
+
+          <MobileNav modalities={modalities} />
+        </div>
       </div>
     </header>
   );
