@@ -69,7 +69,10 @@ export function Footer({ address }: FooterProps) {
 
         <div className="mt-10 flex flex-col gap-2 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Clube Desportivo Guajiru</p>
-          <p>Gestão transparente e voluntária</p>
+          <div className="flex items-center gap-3">
+            <Image src="/sfa.png" alt="Selo de Formação de Atletas CBC" width={60} height={60} className="h-14 w-auto" />
+            <p>Gestão transparente e voluntária</p>
+          </div>
         </div>
       </div>
     </footer>
