@@ -20,12 +20,23 @@ export type GalleryImage = {
   published: boolean | null;
 };
 
+export type TransparencyDocType =
+  | "ata"
+  | "estatuto"
+  | "relatório"
+  | "estrutura"
+  | "remuneração";
+
 export type TransparencyDocument = {
   id: string;
   title: string;
-  doc_type: "ata" | "estatuto" | "relatório";
+  doc_type: TransparencyDocType;
   file_url: string;
   published_at: string;
+  updated_at?: string | null;
+  source_note?: string | null;
+  version?: string | null;
+  content_hash?: string | null;
 };
 
 export type PageInstitucional = {

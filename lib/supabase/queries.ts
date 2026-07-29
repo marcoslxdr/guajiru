@@ -85,16 +85,17 @@ export async function getGalleryImages(): Promise<GalleryImage[]> {
 }
 
 export async function getTransparencyDocuments(): Promise<TransparencyDocument[]> {
-  if (!hasSupabase) return [];
+  if (!hasSupabase) return clubFallbacks.transparencyDocuments;
   const supabase = getClient();
-  if (!supabase) return [];
+  if (!supabase) return clubFallbacks.transparencyDocuments;
 
   const { data } = await supabase
     .from("transparency_documents")
     .select("*")
     .order("published_at", { ascending: false });
 
-  return data ?? [];
+  if (!data?.length) return clubFallbacks.transparencyDocuments;
+  return data;
 }
 
 export async function getPageInstitucional(): Promise<PageInstitucional | null> {

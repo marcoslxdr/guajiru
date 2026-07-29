@@ -1,13 +1,18 @@
 import Link from "next/link";
 import type { TransparencyDocument } from "@/lib/supabase/types";
-
-const DOC_TYPE_LABELS: Record<TransparencyDocument["doc_type"], string> = {
-  ata: "Ata",
-  estatuto: "Estatuto",
-  relatório: "Relatório",
-};
+import { transparencyDocTypeMeta } from "@/lib/transparency";
 
 function formatDate(iso: string) {
+  const dateOnly = iso.slice(0, 10);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateOnly)) {
+    const [year, month, day] = dateOnly.split("-").map(Number);
+    return new Date(year, month - 1, day).toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  }
+
   return new Date(iso).toLocaleDateString("pt-BR", {
     day: "2-digit",
     month: "short",
@@ -35,6 +40,7 @@ export function TransparencyDocumentList({ documents }: { documents: Transparenc
             <tr>
               <th className="px-4 py-3 font-medium">Título</th>
               <th className="px-4 py-3 font-medium">Tipo</th>
+              <th className="px-4 py-3 font-medium">Versão</th>
               <th className="px-4 py-3 font-medium">Publicado em</th>
               <th className="px-4 py-3 font-medium" />
             </tr>
@@ -43,7 +49,8 @@ export function TransparencyDocumentList({ documents }: { documents: Transparenc
             {documents.map((doc) => (
               <tr key={doc.id} className="border-b border-border last:border-b-0">
                 <td className="px-4 py-3 font-medium">{doc.title}</td>
-                <td className="px-4 py-3">{DOC_TYPE_LABELS[doc.doc_type]}</td>
+                <td className="px-4 py-3">{transparencyDocTypeMeta[doc.doc_type].label}</td>
+                <td className="px-4 py-3 text-muted-foreground">{doc.version ?? "1.0"}</td>
                 <td className="px-4 py-3 text-muted-foreground">{formatDate(doc.published_at)}</td>
                 <td className="px-4 py-3 text-right">
                   <Link href={`/admin/transparencia/${doc.id}/edit`} className="link-arrow">

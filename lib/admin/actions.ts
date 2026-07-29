@@ -1,17 +1,18 @@
 "use server";
 
+import { createHash } from "crypto";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { sanitizePostHtml } from "@/lib/admin/sanitize-html";
 import { slugify } from "@/lib/admin/slugify";
 import { assertAdmin } from "@/lib/supabase/admin";
 import { getTypedSupabase } from "@/lib/supabase/typed-server";
-import type { Database, Post, PostStatus, TransparencyDocument } from "@/lib/supabase/types";
+import { DEFAULT_DOCUMENT_SOURCE, isTransparencyDocType } from "@/lib/transparency";
+import type { Database, Post, PostStatus } from "@/lib/supabase/types";
 
 const MAX_COVER_BYTES = 2 * 1024 * 1024;
 const ALLOWED_COVER_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 const MAX_PDF_BYTES = 10 * 1024 * 1024;
-const DOC_TYPES = new Set<TransparencyDocument["doc_type"]>(["ata", "estatuto", "relatório"]);
 
 export type ActionResult = {
   ok: boolean;
@@ -291,6 +292,11 @@ function transparencyStoragePath(id: string) {
   return `transparency/${id}/document.pdf`;
 }
 
+async function hashPdfFile(file: File) {
+  const buffer = Buffer.from(await file.arrayBuffer());
+  return createHash("sha256").update(buffer).digest("hex");
+}
+
 async function uploadTransparencyPdf(id: string, file: File) {
   if (file.size > MAX_PDF_BYTES) {
     throw new Error("O PDF deve ter no máximo 10 MB.");
@@ -323,13 +329,16 @@ export async function saveTransparencyDocumentAction(formData: FormData): Promis
   const title = String(formData.get("title") ?? "").trim();
   const docTypeRaw = String(formData.get("doc_type") ?? "");
   const publishedAt = String(formData.get("published_at") ?? "").trim();
+  const sourceNote =
+    String(formData.get("source_note") ?? "").trim() || DEFAULT_DOCUMENT_SOURCE;
+  const version = String(formData.get("version") ?? "").trim() || "1.0";
   const file = formData.get("file");
 
   if (!title) {
     return { ok: false, error: "Título é obrigatório." };
   }
 
-  if (!DOC_TYPES.has(docTypeRaw as TransparencyDocument["doc_type"])) {
+  if (!isTransparencyDocType(docTypeRaw)) {
     return { ok: false, error: "Tipo de documento inválido." };
   }
 
@@ -337,9 +346,10 @@ export async function saveTransparencyDocumentAction(formData: FormData): Promis
     return { ok: false, error: "Data de publicação é obrigatória." };
   }
 
-  const docType = docTypeRaw as TransparencyDocument["doc_type"];
+  const docType = docTypeRaw;
   const supabase = await getTypedSupabase();
   const hasNewFile = file instanceof File && file.size > 0;
+  const now = new Date().toISOString();
 
   if (!id && !hasNewFile) {
     return { ok: false, error: "Selecione um arquivo PDF." };
@@ -352,6 +362,9 @@ export async function saveTransparencyDocumentAction(formData: FormData): Promis
       title,
       doc_type: docType,
       published_at: publishedAt,
+      source_note: sourceNote,
+      version,
+      updated_at: now,
     };
 
     const { error } = await supabase.from("transparency_documents").update(updatePayload).eq("id", id);
@@ -366,13 +379,20 @@ export async function saveTransparencyDocumentAction(formData: FormData): Promis
     docId = crypto.randomUUID();
 
     try {
-      const fileUrl = await uploadTransparencyPdf(docId, file);
+      const [fileUrl, contentHash] = await Promise.all([
+        uploadTransparencyPdf(docId, file),
+        hashPdfFile(file),
+      ]);
       const { error } = await supabase.from("transparency_documents").insert({
         id: docId,
         title,
         doc_type: docType,
         published_at: publishedAt,
         file_url: fileUrl,
+        source_note: sourceNote,
+        version,
+        content_hash: contentHash,
+        updated_at: now,
       });
 
       if (error) {
@@ -393,8 +413,14 @@ export async function saveTransparencyDocumentAction(formData: FormData): Promis
 
   if (id && hasNewFile && file instanceof File) {
     try {
-      const fileUrl = await uploadTransparencyPdf(docId, file);
-      await supabase.from("transparency_documents").update({ file_url: fileUrl }).eq("id", docId);
+      const [fileUrl, contentHash] = await Promise.all([
+        uploadTransparencyPdf(docId, file),
+        hashPdfFile(file),
+      ]);
+      await supabase
+        .from("transparency_documents")
+        .update({ file_url: fileUrl, content_hash: contentHash, updated_at: now })
+        .eq("id", docId);
     } catch (error) {
       return {
         ok: false,
@@ -404,6 +430,7 @@ export async function saveTransparencyDocumentAction(formData: FormData): Promis
   }
 
   revalidatePath("/transparencia");
+  revalidatePath("/admin/transparencia");
   return { ok: true, id: docId };
 }
 

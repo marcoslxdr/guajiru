@@ -4,8 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CLUB_LOGO } from "@/lib/brand";
+import type { SiteSearchItem } from "@/lib/site-search";
+import { AccessibilityMenu } from "./accessibility-menu";
 import { MobileNav } from "./mobile-nav";
 import { ModalitiesMenu, type ModalityNavLink } from "./modalities-menu";
+import { SiteSearch } from "./site-search";
 
 const navItems = [
   { href: "/", label: "Início" },
@@ -17,7 +20,13 @@ const navItems = [
   { href: "/contato", label: "Contato" },
 ];
 
-export function Header({ modalities }: { modalities: ModalityNavLink[] }) {
+export function Header({
+  modalities,
+  searchItems,
+}: {
+  modalities: ModalityNavLink[];
+  searchItems: SiteSearchItem[];
+}) {
   const pathname = usePathname();
 
   return (
@@ -78,6 +87,11 @@ export function Header({ modalities }: { modalities: ModalityNavLink[] }) {
               );
             })}
           </nav>
+
+          <div className="flex items-center gap-2" aria-label="Ferramentas de conteúdo e acessibilidade">
+            <SiteSearch items={searchItems} />
+            <AccessibilityMenu />
+          </div>
 
           <Link
             href="/admin/login"

@@ -1,4 +1,4 @@
-import type { BoardMember, HistoryMilestone } from "@/lib/supabase/types";
+import type { BoardMember, HistoryMilestone, TransparencyDocument } from "@/lib/supabase/types";
 
 export type ClubValue = {
   name: string;
@@ -88,6 +88,105 @@ export const clubFallbacks = {
     "Conforme o Artigo 13 do Estatuto do clube, as funções de direção e conselho não são remuneradas.",
   transparencyIntro:
     "O Clube Desportivo Guajiru mantém esta página com documentos oficiais para consulta pública. Aqui você encontra o estatuto, atas de reuniões e relatórios financeiros — parte do nosso compromisso com gestão transparente e voluntária.",
+  transparencyDocuments: [
+    {
+      id: "fallback-estatuto-ata-fundacao",
+      title: "Estatuto e ata de fundação",
+      doc_type: "estatuto",
+      file_url: "/transparencia/estatuto-e-ata-de-fundacao.pdf",
+      published_at: "2024-03-01T00:00:00.000Z",
+      updated_at: "2024-03-01T00:00:00.000Z",
+      source_note: "Publicado pela diretoria do Clube Desportivo Guajiru",
+      version: "1.0",
+      content_hash: null,
+    },
+    {
+      id: "fallback-cnpj",
+      title: "Comprovante de inscrição e de situação cadastral (CNPJ)",
+      doc_type: "relatório",
+      file_url: "/transparencia/cnpj-21-06-2026.pdf",
+      published_at: "2026-06-21T00:00:00.000Z",
+      updated_at: "2026-06-21T00:00:00.000Z",
+      source_note: "Publicado pela diretoria do Clube Desportivo Guajiru",
+      version: "1.0",
+      content_hash: null,
+    },
+  ] satisfies TransparencyDocument[],
+  roleCompetencies: {
+    Presidente:
+      "Representação legal do clube, direção geral e articulação institucional junto a parceiros e órgãos públicos.",
+    "Vice-presidente":
+      "Substitui o presidente e apoia a coordenação das atividades administrativas e esportivas.",
+    Secretário:
+      "Organização de documentos, atas e comunicações oficiais da diretoria.",
+    "Diretor Secretário":
+      "Apoio à secretaria, registro de deliberações e suporte administrativo à gestão.",
+    Patrimônio:
+      "Zelo pelo patrimônio material do clube e controle de bens e equipamentos.",
+    "Pres. Conselho de Atletas":
+      "Representação dos atletas junto à diretoria e mediação de demandas da base esportiva.",
+  } as Record<string, string>,
+  transparencyFaq: [
+    {
+      question: "Quais documentos estão disponíveis nesta página?",
+      answer:
+        "Publicamos estatuto, atas e relatórios financeiros e cadastrais para consulta pública. Os arquivos podem ser abertos online ou baixados em PDF.",
+    },
+    {
+      question: "Os cargos da diretoria são remunerados?",
+      answer:
+        "Não. Conforme o Artigo 13 do Estatuto, as funções de direção e conselho fiscal não são remuneradas — a gestão é voluntária.",
+    },
+    {
+      question: "Como solicito um documento ou informação adicional?",
+      answer:
+        "Use o e-mail institucional ou o formulário em Contato, descrevendo o pedido com clareza. A diretoria responde conforme a disponibilidade da gestão voluntária.",
+    },
+    {
+      question: "Com que frequência os documentos são atualizados?",
+      answer:
+        "A data de publicação de cada arquivo e a última atualização geral da lista aparecem nesta página. Novos documentos são incluídos após aprovação da diretoria.",
+    },
+    {
+      question: "Como confiro a autenticidade de um PDF?",
+      answer:
+        "Cada documento informa origem, versão e, quando disponível, o hash SHA-256 do arquivo. Baixe o PDF, calcule o hash no seu computador e compare com o valor publicado. Em caso de divergência, contate a diretoria.",
+    },
+    {
+      question: "Como falo com o clube por telefone ou WhatsApp?",
+      answer:
+        "Quando houver número oficial cadastrado, ele aparece na seção Fale conosco. Caso contrário, priorize o e-mail ou o formulário de contato do site.",
+    },
+  ] as { question: string; answer: string }[],
+  contactEmail: "diretoria@clubeguajiru.org.br",
+  vacanciesSummary:
+    "Informações sobre política de remuneração, cargos voluntários e oportunidades de associação no Clube Desportivo Guajiru.",
+  vacanciesAndRemuneration: [
+    {
+      title: "Diretoria e Conselho Fiscal",
+      detail:
+        "Cargos de direção e fiscalização não são remunerados, conforme o Artigo 13 do Estatuto.",
+      status: "politica" as const,
+    },
+    {
+      title: "Voluntariado esportivo e institucional",
+      detail:
+        "Apoio em treinos, eventos e comunicação ocorre de forma voluntária. Interessados podem se candidatar pelo formulário de contato.",
+      status: "aberta" as const,
+    },
+    {
+      title: "Associação de atletas e colaboradores",
+      detail:
+        "Processos de associação são divulgados nos canais oficiais. Não há quadro de empregados remunerados publicado neste momento.",
+      status: "aberta" as const,
+    },
+    {
+      title: "Cargos remunerados",
+      detail:
+        "Não há vagas remuneradas abertas na data desta publicação. Qualquer abertura futura será registrada aqui e em documento PDF.",
+      status: "encerrada" as const,
+    },
+  ],
   historyMilestones: [
     {
       date: "01/03/2024",
