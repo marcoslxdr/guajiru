@@ -41,11 +41,123 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-source-sans), system-ui, sans-serif;
   line-height: 1.25;
+  font-size: calc(1rem * var(--a11y-font-scale, 1));
+}
+
+html[data-contrast="high"] {
+  --background: #ffffff;
+  --foreground: #000000;
+  --primary: #1f5f12;
+  --primary-foreground: #ffffff;
+  --accent: #d4e000;
+  --secondary: #7a1f4a;
+  --highlight: #ffb3d9;
+  --muted: #f0f0f0;
+  --muted-foreground: #111111;
+  --border: #000000;
+  --surface: #ffffff;
+}
+
+html[data-contrast="high"] body {
+  background: #ffffff;
+  color: #000000;
+}
+
+html[data-contrast="high"] a {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+html[data-underline-links="true"] a {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+html[data-readable-font="true"] body {
+  letter-spacing: 0.02em;
+  word-spacing: 0.08em;
+  line-height: 1.55;
+}
+
+html[data-readable-font="true"] p,
+html[data-readable-font="true"] li,
+html[data-readable-font="true"] label,
+html[data-readable-font="true"] input,
+html[data-readable-font="true"] textarea,
+html[data-readable-font="true"] button,
+html[data-readable-font="true"] a {
+  line-height: 1.55;
+}
+
+html[data-font-scale="112"] {
+  --a11y-font-scale: 1.12;
+}
+
+html[data-font-scale="125"] {
+  --a11y-font-scale: 1.25;
+}
+
+html[data-font-scale="150"] {
+  --a11y-font-scale: 1.5;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100%;
+  z-index: 100;
+  border-radius: 9999px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 1rem;
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+:focus-visible {
+  outline: 3px solid color-mix(in oklch, var(--guajiru-verde) 70%, black);
+  outline-offset: 2px;
+}
+
+.chip-button {
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+
+.chip-button:hover {
+  border-color: color-mix(in oklch, var(--guajiru-verde) 40%, var(--border));
+  color: var(--primary);
+}
+
+.chip-button[aria-pressed="true"],
+.chip-button.is-active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--primary-foreground);
 }
 
 @layer components {
